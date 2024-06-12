@@ -1,0 +1,189 @@
+doctype html
+html(lang='en')
+  head
+    style.
+      #aboutMe {
+        background-color: rgb(128,128,128);
+      }
+      #aboutMe:hover {
+        background-color: #555;
+      }
+    script(src='https://code.jquery.com/jquery-3.6.0.min.js')
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='public/css/main.css')
+    link(rel="stylesheet", href='public/css/fontello.css')
+    title My Projects
+    script(type='text/javascript').
+      let views = 0;
+      let stored = false;
+      let prevURL;
+      const lastPageUrl = document.referrer; 
+      prevURL = lastPageUrl.toString();
+      currentURL = window.location.href;
+      currURL = currentURL.toString();
+      console.log(prevURL);
+      function updateCounter(type) {
+        return fetch('https://kindhearted-hollow-cactus.glitch.me/api?' + type)
+        .then((res) => res.json());
+      }
+      // Update counter on page load or refresh
+      if (performance.navigation.type === 1) {
+        updateCounter("type=visit-pageview")
+        .then((data) => {
+          views = data.pageviews;
+          const pageviewsCount = document.getElementById('visitEng');
+          const pageviewsCount1 = document.getElementById('visitPol');
+          if (pageviewsCount || pageviewsCount1) {
+            pageviewsCount.textContent = "Visits: " + views; // Display pageviews to the user
+            pageviewsCount1.textContent = "Wizyty: " + views;
+          }
+          sessionStorage.setItem("visit", "x");
+          // Store 'views' in localStorage
+          localStorage.setItem('views', views);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      } else {
+        // If not a page load or refresh, check if it's a specific page
+        if (prevURL != 'https://kindhearted-hollow-cactus.glitch.me/applications' &&
+            prevURL != 'https://kindhearted-hollow-cactus.glitch.me/mechanics' &&
+            prevURL != 'https://kindhearted-hollow-cactus.glitch.me/games' &&
+            prevURL != 'https://kindhearted-hollow-cactus.glitch.me/') {
+          updateCounter("type=pageview")
+          .then((data) => {
+            views = data.pageviews;
+            const pageviewsCount = document.getElementById('visitEng');
+            const pageviewsCount1 = document.getElementById('visitPol');
+            if (pageviewsCount || pageviewsCount1) {
+              pageviewsCount.textContent = "Visits: " + views; // Display pageviews to the user
+              pageviewsCount1.textContent = "Wizyty: " + views;
+            }
+            // Store 'views' in localStorage
+            localStorage.setItem('views', views);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+        } else {
+          stored = true;
+        }
+      }
+    //console.log(window.location.href);
+  body
+    span.tooltip-textEng
+    span.tooltip-textPol
+    img.code(src='https://cdn.glitch.global/a02f0561-d6c8-468b-9bad-b43135e7d9d0/1%20code.jpg?v=1714757670057')
+    .content
+      .menu
+        div.submenu1
+        div.aboutLeft
+        a#aboutMe(href='/').bg
+          div#engAbout.toggle-element.visible About Me
+          div#polAbout.pol.toggle-element O mnie
+        div(style="width:20px;border-bottom-right-radius: 10px;background-color: rgb(128,128,128);border-bottom-right-radius: 10px")
+        .dropdown
+          div#projects.bg
+            a#projectsEng.services.toggle-element.visible Projects
+            a#projectsPol.services.toggle-element Projekty
+          .dropdown-content.hidden(style='display: none;')
+            a#apps.service(href="/applications" onclick='hidemenu()')
+              i.icon-laptop
+            a#mech.service(href='/mechanics' onclick='hidemenu()')
+            a#games.service(href='/games' onclick='hidemenu()')
+        div.fille(style="background-color: rgb(128,128,128);width:100%;border-bottom-left-radius: 10px")
+        div#visits
+          a#visitEng.visits.toggle-element.visible
+          a#visitPol.visits.toggle-element
+        div#lang(onclick="toggleElements()")
+          img(src='https://cdn.glitch.global/fa1cb8d5-4868-42bc-bf52-27fcc0455e8f/POL.jpg?v=1699542939034')#eng.toggle-element.visible
+          img(src='https://cdn.glitch.global/fa1cb8d5-4868-42bc-bf52-27fcc0455e8f/UK.jpg?v=1699539920089')#pol.toggle-element 
+        div.rightCorner
+    .main
+      .mainContent
+        #viewer
+          #image-viewer
+            img(src='' onclick="back()")#displayed-image
+        #homeContent
+          #textEng(style="width: 100%;")
+            div.project
+              .projectTitle
+                .engTitle.toggle-element.visible "VIBRATIONS DUMPING SIMULATOR"
+                .polTitle.toggle-element "SYMULATOR TŁUMIENIA DRGAŃ"  
+              .imageDescription
+                .image
+                  img(src='public/images/python.png' onclick="display()").projectImg
+                .description
+                  .descriptionEng.toggle-element.visible
+                    | Simulator of forced vibrations with a harmonic force for a system: mass, spring, damper in Python. The program solves the differential equation of motion for a given mass using numerical differentiation. The system's frequency is calculated based on the SciPy library. The computations take a relatively long time, the program would run much faster in C++. However, the significant accessibility Python libraries for developers is an undeniable advantage of this programming language.
+                  .descriptionPol.toggle-element
+                    | Symulator drgań wymuszonych siłą harmoniczną układu: masa, sprężyna, tłumik w języku Python. Program rozwiązuje różniczkowe równanie ruchu danej masy metodą różniczkowania numerycznego. Częstotliwość układu obliczana jest w oparciu o bibliotekę SciPy. Obliczenia trwają relatywnie długo, dużo szybciej program działałby w języku C++, jednak duża przystępność dla programisty bibliotek Python to niewątpliwa zaleta tego narzędzia.    
+              .tables(style="width: 35%") 
+                .tech
+                  div.border.not(style="white-space: nowrap;") 
+                      i.icon-cogs
+                      p.borderContent
+                        | Python
+                a(href='https://github.com/arturr0/python-simulator' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").git
+                  .gitEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-github-circled
+                      p.borderContent
+                        | GitHub
+            hr(style="margin-right: 20px; margin-left: 20px; margin-bottom: 0;")
+            div.project
+              .projectTitle
+                .engTitle.toggle-element.visible "SOLUTION OF A THIRD-ORDER DIFFERENTIAL EQUATION"
+                .polTitle.toggle-element "ROZWIĄZANIE RÓWNANIA RÓŻNICZKOWEGO TRZECIEGO STOPNIA"  
+              .imageDescription
+                .image
+                  img(src='public/images/rr.png' onclick="display()").projectImg
+                .description
+                  .descriptionEng.toggle-element.visible
+                    | The program's task is to solve a differential equation of motion with a third derivative. The equation is implemented in the Simulink environment as a block diagram. The MATLAB program displays the solution of the equation in the form of plots of frequency, jerk (third derivative), acceleration (second derivative), velocity (first derivative), and displacement as functions of time.
+                  .descriptionPol.toggle-element
+                    | Zadaniem programu jest rozwiązanie różniczkowego równania ruchu z trzecią pochodną. Równanie zaimplementowane jest w środowisku Simulink w postaci schematu blokowego. Rozwiązanie równania program MATLAB wyświetla w postaci wykresów częstotliwości, zrywności (trzecia pochodna), przyspieszenia (druga pochodna), prędkości (pierwsza pochodna) i drogi w funkcji czasu.
+              .tables(style="width: 35%") 
+                .tech
+                  div.border.not(style="white-space: nowrap;") 
+                      i.icon-cogs
+                      p.borderContent
+                        | MATLAB, Simulink
+                a(href='https://github.com/arturr0/simulink-equation' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").git
+                  .gitEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-github-circled
+                      p.borderContent
+                        | GitHub
+            hr(style="margin-right: 20px; margin-left: 20px; margin-bottom: 0;")
+            div.project
+              .projectTitle
+                .engTitle.toggle-element.visible "SIMULATOR OF VEHICLE SUSPETION SYSTEM OPERATION AFTER DRIVING OVER A CURB"
+                .polTitle.toggle-element "SYMULATOR DZIAŁANIA UKŁADU ZAWIESZENIA POJAZDU PO NAJEŻDZIE NA KRAWĘŹNIK"  
+              .imageDescription
+                .image
+                  img(src='public/images/passanger.png' onclick="display()").projectImg
+                .description
+                  .descriptionEng.toggle-element.visible
+                    | The program simulates the operation of a vehicle suspension system after driving over a curb with the front and rear wheels. The system of springs, shock absorbers, and masses is configured in the graphical Amesim environment. Program displays acceleration and vibrations acting on the passenger on a graph, enabling the analysis of the phenomenon. Application allows for the adjustment of suspension element parameters to minimize the discomfort for the passenger when driving over a curb.
+                  .descriptionPol.toggle-element
+                    | Program symuluje działanie układu zawieszenia pojazdu po najeździe na krawężnik przednim i tylnym kołem. Układ sprężyn, amortyzatorów i mas ustawia się w graficznym środowisku Amesim. Wykres przyspieszeń i drgań działających na pasażera pozwala na analize zjawiska, a aplikacja umożliwia dobór parametrów elementów zawieszenia tak, aby najazd na krawężnik był jak najmniej uciążliwy dla pasażera.     
+              .tables(style="width: 35%") 
+                .tech
+                  div.border.not(style="white-space: nowrap;") 
+                      i.icon-cogs
+                      p.borderContent
+                        | LMS Amesim
+                a(href='https://github.com/arturr0/LMS' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").git
+                  .gitEng
+                    div.border(style="white-space: nowrap; margin-bottom: 10px") 
+                      i.icon-github-circled
+                      p.borderContent
+                        | GitHub
+    script(type='text/javascript').
+      let storedViews = localStorage.getItem('views');
+      document.getElementById('visitEng').textContent = "Visits: " + storedViews;
+      document.getElementById('visitPol').textContent = "Wizyty: " + storedViews;
+    script(src='public/dropdown.js')
+    

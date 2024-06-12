@@ -1,0 +1,174 @@
+doctype html
+html(lang='en')
+  head
+    style.
+      #aboutMe {
+        background-color: rgb(128,128,128);
+      }
+      #aboutMe:hover {
+        background-color: #555;
+      }
+    script(src='https://code.jquery.com/jquery-3.6.0.min.js')
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='public/css/main.css')
+    link(rel="stylesheet", href='public/css/fontello.css')
+    title My Projects
+    script(type='text/javascript').
+      let views = 0;
+      let stored = false;
+      let prevURL;
+      const lastPageUrl = document.referrer; 
+      prevURL = lastPageUrl.toString();
+      currentURL = window.location.href;
+      currURL = currentURL.toString();
+      console.log(prevURL);
+      function updateCounter(type) {
+        return fetch('https://kindhearted-hollow-cactus.glitch.me/api?' + type)
+        .then((res) => res.json());
+      }
+      // Update counter on page load or refresh
+      if (performance.navigation.type === 1) {
+        updateCounter("type=visit-pageview")
+        .then((data) => {
+          views = data.pageviews;
+          const pageviewsCount = document.getElementById('visitEng');
+          const pageviewsCount1 = document.getElementById('visitPol');
+          if (pageviewsCount || pageviewsCount1) {
+            pageviewsCount.textContent = "Visits: " + views; // Display pageviews to the user
+            pageviewsCount1.textContent = "Wizyty: " + views;
+          }
+          sessionStorage.setItem("visit", "x");
+          // Store 'views' in localStorage
+          localStorage.setItem('views', views);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      } else {
+        // If not a page load or refresh, check if it's a specific page
+        if (prevURL != 'https://kindhearted-hollow-cactus.glitch.me/applications' &&
+            prevURL != 'https://kindhearted-hollow-cactus.glitch.me/mechanics' &&
+            prevURL != 'https://kindhearted-hollow-cactus.glitch.me/games' &&
+            prevURL != 'https://kindhearted-hollow-cactus.glitch.me/') {
+          updateCounter("type=pageview")
+          .then((data) => {
+            views = data.pageviews;
+            const pageviewsCount = document.getElementById('visitEng');
+            const pageviewsCount1 = document.getElementById('visitPol');
+            if (pageviewsCount || pageviewsCount1) {
+              pageviewsCount.textContent = "Visits: " + views; // Display pageviews to the user
+              pageviewsCount1.textContent = "Wizyty: " + views;
+            }
+            // Store 'views' in localStorage
+            localStorage.setItem('views', views);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+        } else {
+          stored = true;
+        }
+      }
+    //console.log(window.location.href);
+  body
+    span.tooltip-textEng
+    span.tooltip-textPol
+    img.code(src='https://cdn.glitch.global/a02f0561-d6c8-468b-9bad-b43135e7d9d0/1%20code.jpg?v=1714757670057')
+    .content
+      .menu
+        div.submenu1
+        div.aboutLeft
+        a#aboutMe(href='/')
+          div#engAbout.toggle-element.visible About Me
+          div#polAbout.pol.toggle-element O mnie
+        div(style="width:20px;border-bottom-right-radius: 10px;background-color: rgb(128,128,128);")
+        .dropdown
+          div#projects.bg
+            a#projectsEng.services.toggle-element.visible Projects
+            a#projectsPol.services.toggle-element Projekty
+          .dropdown-content.hidden(style='display: none;')
+            a#apps.service(href="/applications" onclick='hidemenu()')
+              i.icon-laptop
+            a#mech.service(href='/mechanics' onclick='hidemenu()')
+            a#games.service(href='/games' onclick='hidemenu()')
+        div.filler(style="background-color: rgb(128,128,128);width:100%;border-bottom-left-radius: 10px")
+        div#visits
+          a#visitEng.visits.toggle-element.visible
+          a#visitPol.visits.toggle-element
+        div#lang(onclick="toggleElements()")
+          img(src='https://cdn.glitch.global/fa1cb8d5-4868-42bc-bf52-27fcc0455e8f/POL.jpg?v=1699542939034')#eng.toggle-element.visible
+          img(src='https://cdn.glitch.global/fa1cb8d5-4868-42bc-bf52-27fcc0455e8f/UK.jpg?v=1699539920089')#pol.toggle-element  
+        div.rightCorner
+    .main
+      .mainContent
+        #viewer
+          #image-viewer
+            img(src='' onclick="back()")#displayed-image
+        #homeContent
+          #textEng(style="width: 100%;")
+            div.project
+              .projectTitle
+                | "CHAT"
+              .imageDescription
+                .image
+                  img(src='public/images/chat.jpg' onclick="display()").projectImg
+                .description
+                  .descriptionEng.toggle-element.visible
+                    | Chat application based on WebSocket technology whitch enables fast data transmission between browsers. Create an account to use 'Chat.' The program allows adding users to friends. The color of the icon next to the friend's name indicates their status: green – online, black - offline. Creating groups of friends allows sending of messages to multiple users simultaneously. The application operates on the free Glitch hosting; therefore, accounts are retained only for the duration of one session. In preparation, there is a database storing sent and received messages.   
+                  .descriptionPol.toggle-element
+                    | Aplikacja do czatu działająca w oparciu o technologię WebSocket, umożliwiającą szybkie przesyłanie danych pomiędzy przeglądarkami. Utwórz konto, aby móc korzystać z „Chat”. Program pozwala na dodawanie użytkowników do znajomych. Kolor ikony przy nazwie znajomego wskazuje na jego status: zielony – online, czarny – offline. Możliwe jest tworzenie grup znajomych, dzięki czemu można wysyłać wiadomości do wielu użytkowników jednocześnie. Aplikacja działa na darmowym hostingu Glitch, w związku z tym konta są zachowywane tylko na czas jednej sesji. W przygotowaniu: baza danych przechowująca wysłane i odebrane wiadomości. 
+              .tables 
+                .tech
+                  div.border.not(style="white-space: nowrap;") 
+                      i.icon-cogs
+                      p.borderContent
+                        | JavaScript, HTML5, CSS, WebSocket
+                a(href='https://forested-warp-harmonica.glitch.me/' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").link
+                  .linkEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-globe
+                      p.borderContent
+                        | Link
+                a(href='https://github.com/arturr0/chat' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").git
+                  .gitEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-github-circled
+                      p.borderContent
+                        | GitHub
+            hr(style="margin-right: 20px; margin-left: 20px; margin-bottom: 0;")
+            div.project
+              .projectTitle
+                | "WAREHOUSE API"
+              .imageDescription
+                .image
+                  img(src='https://cdn.glitch.global/79283f6f-ef1e-4285-822b-eaefe68c462e/new.bmp?v=1714693587866' onclick="display()").projectImg
+                .description
+                  .descriptionEng.toggle-element.visible
+                    | An API interface based on CRUD functions (create, read, update, delete). The 'Warehouse API' allows storing and updating the inventory status of products. To add a new product, enter its name and quantity in the respective fields, then click the 'CREATE PRODUCT' button. Bar charts represent the quantity of products (the chart rendering code is written in the P5.JS library). The 'UPDATE' button replaces the product name or quantity with a new one. The quantity can be updated using the '+' and '-' buttons.
+                  .descriptionPol.toggle-element
+                    | Interfejs API oparty o funkcje CRUD (create, read, update, delete). “Warehouse API” umożliwia przechowywanie i aktualizowanie stanu magazynowego produktów. Aby wprowadzić nowy produkt należy wpisać jego nazwę i ilość w odpowiednie okna, a następnie kliknąć przycisk CREATE PRODUCT. Ilość produktów przedstawiają wykresy słupkowe (kod renderowania wykresów napisany jest w bibliotece P5.JS). Przycisk UPDATE podmienia nazwę produktu lub ilość na nową. Ilość można aktualizować przyciskami "+" i "-".    
+              .tables(style="margin-bottom: 10px;") 
+                .tech
+                  div.border.not(style="white-space: nowrap;") 
+                      i.icon-cogs
+                      p.borderContent
+                        | JavaScript, HTML5, CSS, Express.JS  
+                a(href='https://nostalgic-caterwauling-nylon.glitch.me/' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").link
+                  .linkEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-globe
+                      p.borderContent
+                        | Link
+                a(href='https://github.com/arturr0/crud-api2' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").git
+                  .gitEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-github-circled
+                      p.borderContent
+                        | GitHub
+    script(type='text/javascript').
+      let storedViews = localStorage.getItem('views');
+      document.getElementById('visitEng').textContent = "Visits: " + storedViews;
+      document.getElementById('visitPol').textContent = "Wizyty: " + storedViews;
+    script(src='public/dropdown.js')
+    

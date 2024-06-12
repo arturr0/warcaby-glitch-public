@@ -1,0 +1,57 @@
+doctype html
+html(lang='en')
+  head
+    script(src='https://code.jquery.com/jquery-3.6.0.min.js')
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='public/css/main.css')
+    link(rel="stylesheet", href='public/css/fontello.css')
+    title Animated Dropdown Menu
+  body
+    img.code(src='https://cdn.glitch.global/9000d3a8-f0f0-4e2c-b476-5b18780c7703/bg1.jpg?v=1699687737131')
+    .content
+      .menu
+        i.icon-user
+        a#aboutMe(href='/')
+          div#engAbout.toggle-element.visible About Me
+          div#polAbout.pol.toggle-element O mnie
+        i.icon-list-alt
+        .dropdown
+          div#projects
+            a#projectsEng.services.toggle-element.visible Projects
+            a#projectsPol.services.toggle-element Projekty
+          .dropdown-content.hidden(style='display: none;')
+            a#apps.service(href="/service1", onclick='hidemenu()')
+              i.icon-laptop
+            a#mech.service(href='/service2', onclick='hidemenu()')
+            a#games.service(href='/service3', onclick='hidemenu()')
+        i.icon-group
+        div#visits
+          a#visitEng.visits.toggle-element.visible
+          a#visitPol.visits.toggle-element
+        div#lang(onclick="toggleElements()")
+          img(src='https://cdn.glitch.global/fa1cb8d5-4868-42bc-bf52-27fcc0455e8f/POL.jpg?v=1699542939034')#eng.toggle-element.visible
+          img(src='https://cdn.glitch.global/fa1cb8d5-4868-42bc-bf52-27fcc0455e8f/UK.jpg?v=1699539920089')#pol.toggle-element 
+    .main
+      .mainContent
+        #homeContent
+          #textEng(style="width: 100%;")
+            .project
+              .image
+                  img(src='public/images/chat.jpg').projectImg
+                  .git
+                    .gitEng.toggle-element.visible
+                      | SOURCE CODE
+                    .gitPol.toggle-element
+                      | KOD ŹRÓDŁOWY
+              .description
+                .descriptionEng.toggle-element.visible
+                  | P
+                .descriptionPol.toggle-element
+                  | Projekt
+    script(type='text/javascript').
+      let storedViews = localStorage.getItem('views');
+      document.getElementById('visitEng').textContent = "Visits: " + storedViews;
+      document.getElementById('visitPol').textContent = "Wizyty: " + storedViews;
+    script(src='public/dropdown.js')
+    script(src='public/bg.js')

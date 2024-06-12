@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .toggle-element {
+      opacity: 0;
+      transition: opacity 0.5s ease; /* Adjust the duration and easing function as needed */
+    }
+
+    .visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+<button id="butt">Toggle Element</button>
+<div id="myElement" class="toggle-element">
+  This is the element with smooth animation.
+</div>
+<div id="myElement1" class="toggle-element1" style="display: none;">
+    This is the element.
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    //function toggleElement() {
+   // const element = document.getElementById('myElement');
+   // element.classList.toggle('visible');
+  //}
+  let change = false;
+  $('#butt').on('click', function () {
+        change =! change;
+        if(change) {
+            $(".toggle-element").css("display", "none");
+            $(".toggle-element1").css("display", "block");
+            document.getElementsByClassName('toggle-element1').classList.toggle('visible')
+        } 
+        else {
+            $(".toggle-element1").css("display", "none");
+            $(".toggle-element").css("display", "block");
+            document.getElementsByClassName('toggle-element').classList.toggle('visible')
+        } 
+        
+    });
+  </script>
+</body>
+</html>

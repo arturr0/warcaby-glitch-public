@@ -1,0 +1,264 @@
+doctype html
+html(lang='en')
+  head
+    style.
+      #aboutMe {
+        background-color: rgb(128,128,128);
+      }
+      #aboutMe:hover {
+        background-color: #555;
+      }
+    script(src='https://code.jquery.com/jquery-3.6.0.min.js')
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='public/css/main.css')
+    link(rel="stylesheet", href='public/css/fontello.css')
+    title My Projects
+    script(type='text/javascript').
+      let views = 0;
+      let stored = false;
+      let prevURL;
+      const lastPageUrl = document.referrer; 
+      prevURL = lastPageUrl.toString();
+      currentURL = window.location.href;
+      currURL = currentURL.toString();
+      console.log(prevURL);
+      function updateCounter(type) {
+        return fetch('https://kindhearted-hollow-cactus.glitch.me/api?' + type)
+        .then((res) => res.json());
+      }
+      // Update counter on page load or refresh
+      if (performance.navigation.type === 1) {
+        updateCounter("type=visit-pageview")
+        .then((data) => {
+          views = data.pageviews;
+          const pageviewsCount = document.getElementById('visitEng');
+          const pageviewsCount1 = document.getElementById('visitPol');
+          if (pageviewsCount || pageviewsCount1) {
+            pageviewsCount.textContent = "Visits: " + views; // Display pageviews to the user
+            pageviewsCount1.textContent = "Wizyty: " + views;
+          }
+          sessionStorage.setItem("visit", "x");
+          // Store 'views' in localStorage
+          localStorage.setItem('views', views);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      } else {
+        // If not a page load or refresh, check if it's a specific page
+        if (prevURL != 'https://kindhearted-hollow-cactus.glitch.me/applications' &&
+            prevURL != 'https://kindhearted-hollow-cactus.glitch.me/mechanics' &&
+            prevURL != 'https://kindhearted-hollow-cactus.glitch.me/games' &&
+            prevURL != 'https://kindhearted-hollow-cactus.glitch.me/') {
+          updateCounter("type=pageview")
+          .then((data) => {
+            views = data.pageviews;
+            const pageviewsCount = document.getElementById('visitEng');
+            const pageviewsCount1 = document.getElementById('visitPol');
+            if (pageviewsCount || pageviewsCount1) {
+              pageviewsCount.textContent = "Visits: " + views; // Display pageviews to the user
+              pageviewsCount1.textContent = "Wizyty: " + views;
+            }
+            // Store 'views' in localStorage
+            localStorage.setItem('views', views);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+        } else {
+          stored = true;
+        }
+      }
+    //console.log(window.location.href);
+  body
+    span.tooltip-textEng
+    span.tooltip-textPol
+    img.code(src='https://cdn.glitch.global/a02f0561-d6c8-468b-9bad-b43135e7d9d0/1%20code.jpg?v=1714757670057')
+    .content
+      .menu
+        div.submenu1
+        div.aboutLeft
+        a#aboutMe(href='/')
+          div#engAbout.toggle-element.visible About Me
+          div#polAbout.pol.toggle-element O mnie
+        div(style="width:20px;border-bottom-right-radius: 10px;background-color: rgb(128,128,128);")
+        .dropdown
+          div#projects.bg
+            a#projectsEng.services.toggle-element.visible Projects
+            a#projectsPol.services.toggle-element Projekty
+          .dropdown-content.hidden(style='display: none;')
+            a#apps.service(href="/applications" onclick='hidemenu()')
+              i.icon-laptop
+            a#mech.service(href='/mechanics' onclick='hidemenu()')
+            a#games.service(href='/games' onclick='hidemenu()')
+        div.fille(style="background-color: rgb(128,128,128);width:100%;border-bottom-left-radius: 10px")
+        div#visits
+          a#visitEng.visits.toggle-element.visible
+          a#visitPol.visits.toggle-element
+        div#lang(onclick="toggleElements()")
+          img(src='https://cdn.glitch.global/fa1cb8d5-4868-42bc-bf52-27fcc0455e8f/POL.jpg?v=1699542939034')#eng.toggle-element.visible
+          img(src='https://cdn.glitch.global/fa1cb8d5-4868-42bc-bf52-27fcc0455e8f/UK.jpg?v=1699539920089')#pol.toggle-element 
+        div.rightCorner
+    .main
+      .mainContent
+        #viewer
+          #image-viewer
+            img(src='' onclick="back()")#displayed-image
+        #homeContent
+          #textEng(style="width: 100%;")
+            div.project
+              .projectTitle
+                | "ASCII SNAKE"
+              .imageDescription
+                .image
+                  img(src='public/images/snake.png' onclick="display()").projectImg
+                .description
+                  .descriptionEng.toggle-element.visible
+                    | "ASCII Snake" is a project that I am particularly proud of. The animation and control of the snake are entirely my original solutions. The game operates in real-time, displaying ASCII encoding characters instead of graphics. This makes the code easily convertible to another programming language. Download the file and test the game. Control the snake using the W, S, A, D keys.
+                  .descriptionPol.toggle-element
+                    | „ASCII Snake” to projekt, z którego jestem szczególnie zadowolony. Animacja i sterowanie wężem to całkowicie moje autorskie rozwiązanie. Gra działa w czasie rzeczywistym, nie wyświetlając przy tym grafiki, lecz znaki kodowania ASCII. Dzięki temu kod jest możliwy do łatwej konwersji na inny język programowania. Ściągnij plik i przetestuj grę. Sterujesz klawiszami W, S, A, D. 
+              .tables(style="width: 35%") 
+                .tech
+                  div.border.not(style="white-space: nowrap;") 
+                      i.icon-cogs
+                      p.borderContent
+                        | C++
+                a(href='https://github.com/arturr0/snake' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").git
+                  .gitEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-github-circled
+                      p.borderContent
+                        | GitHub
+                a(href='public/downloads/snake.zip' download="snake.zip" style="color: black;")
+                  .downloadContainer
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-download-1
+                      .down.Eng(style="display: flex; align-items: center;")
+                        .downloadEng.toggle-element.visible
+                          | Download
+                        .downloadPol.toggle-element
+                          | Pobierz
+            hr(style="margin-right: 20px; margin-left: 20px; margin-bottom: 0;")
+            div.project
+              .projectTitle
+                | "SPACE SHOOTER"
+              .imageDescription
+                .image
+                  img(src='public/images/shooter.png' onclick="display()").projectImg
+                .description
+                  .descriptionEng.toggle-element.visible
+                    | "Space Shooter" is my first adventure with Allegro5, a multimedia library for C++. The implementation of graphic rendering is quite complex, but it offers significant possibilities. Control is achieved using the mouse. The game features 4 shooting modes activated by the right mouse button. The middle button is responsible for the so-called "bullet-time," a mechanic known mainly from the excellent "Max Payne" though this aspect requires further refinement. Download the game and check it out.
+                  .descriptionPol.toggle-element
+                    | „Space Shooter” to moja pierwsza przygoda z Allegro5 - biblioteką multimedialną dla C++. Implementacja renderowania grafiki jest dość skomplikowana, daje jednak spore możliwości. Sterowanie odbywa się za pomocą myszki. Gra posiada 4 tryby strzelania, aktywowane prawym przyciskiem myszy. Środkowy przycisk odpowiada za tzw. „bullet-time” znany głównie ze świetnego „Max’a Payn’a”, mechanika ta wymaga jednak doszlifowania. Ściągnij grę i sprawdź.    
+              .tables(style="width: 35%") 
+                .tech
+                  div.border.not(style="white-space: nowrap;") 
+                      i.icon-cogs
+                      p.borderContent
+                        | C++, Allegro5
+                a(href='https://github.com/arturr0/shooter' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").git
+                  .gitEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-github-circled
+                      p.borderContent
+                        | GitHub
+                a(href='public/downloads/space shooter.zip' download="space shooter" style="color: black;")
+                  .downloadContainer
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-download-1
+                      .down.Eng(style="display: flex; align-items: center;")
+                        .downloadEng.toggle-element.visible
+                          | Download
+                        .downloadPol.toggle-element
+                          | Pobierz
+            hr(style="margin-right: 20px; margin-left: 20px; margin-bottom: 0; margin-top: 10px;")
+            div.project
+              .projectTitle
+                | "TIC TAC TOE"
+              .imageDescription
+                .image
+                  img(src='public/images/ttt.png' onclick="display()").projectImg
+                .description
+                  .descriptionEng.toggle-element.visible
+                    | The computer plays a series of games of "Tic Tac Toe." Creating this application was inspired by the field of machine learning and neural networks. However, the attempt to implement a fully-fledged AI ended in failure. The "artificial intelligence" in this project is based on deciding whether to attack or defend when two identical symbols appear in a line. The program displays the winning games for one of the sides. Mastering machine learning technology requires more experience from me as a programmer.
+                  .descriptionPol.toggle-element
+                    | Komputer rozgrywa serie partii „Kółka i krzyżyka”. Stworzenie tej aplikacji inspirowane było zagadnieniem machine learning i sieci neuronowych. Próba implementacji pełnoprawnej AI zakończyła się jednak fiaskiem. „Sztuczna inteligencja” w tym projekcie opiera się na podejmowaniu decyzji o ataku lub obronie w momencie wystąpienia dwóch tych samych figur w linii. Program wyświetla zwycięskie partie którejś ze stron. Opanowanie technologii machine learning wymaga ode mnie większego  doświadczenia jako programista.    
+              .tables(style="margin-bottom: 10px")
+                .tech
+                  div.border.not(style="white-space: nowrap;") 
+                      i.icon-cogs
+                      p.borderContent
+                        | C++
+                a(href='https://github.com/arturr0/ttt' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").git
+                  .gitEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-github-circled
+                      p.borderContent
+                        | GitHub
+            hr(style="margin-right: 20px; margin-left: 20px; margin-bottom: 0; margin-top: 0;")
+            div.project
+              .projectTitle
+                | "CRAZY SHOOTER"
+              .imageDescription
+                .image
+                  img(src='public/images/crazy shooter platformer.png' onclick="display()").projectImg
+                .description
+                  .descriptionEng.toggle-element.visible
+                    | Platformer Game. This is my favorite genre of electronic entertainment, so I approached coding with particular enthusiasm. However, I did not expect how many challenges a platformer programmer faces. Physics, collision detection, character and environment animation, level design — these are just some of the issues that need to be addressed. The game has a built-in level editor. Gaps and platforms are created through "click and drag." You can also edit the position of enemies by clicking on the location where they should be. The character movement is controlled using the arrow keys, and firing is done by pressing the 'S' key.
+                  .descriptionPol.toggle-element
+                    | Gra platformowa. Jest to mój ulubiony gatunek elektronicznej rozrywki, więc do kodowania przystąpiłem ze szczególnym entuzjazmem. Nie spodziewałem sie jednak ile wyzwań stoi przed programistą platformówki. Fizyka, detekcja kolizji, animacja postaci i otoczenia, projektowanie poziomów to tylko niektóre problemy, które należy rozwiązać. Gra ma wbudowany edytor planszy. Przepaście i platformy tworzone są poprzez „click and drag”. Można również edytować położenie przeciwników poprzez kliknięcie na miejsce, gdzie ten ma się znajdować. Ruch postaci odbywa się za pomocą strzałek, a otwarcie ognia za pomocą klawisza 'S'.   
+              .tables(style="width: 35%") 
+                .tech
+                  div.border.not(style="white-space: nowrap;") 
+                      i.icon-cogs
+                      p.borderContent
+                        | JavaScript, HTML5, CSS
+                a(href='https://rustic-cold-ton.glitch.me/' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").link
+                  .linkEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-globe
+                      p.borderContent
+                        | Link
+                a(href='https://github.com/arturr0/crazy' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").git
+                  .gitEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-github-circled
+                      p.borderContent
+                        | GitHub
+            hr(style="margin-right: 20px; margin-left: 20px; margin-bottom: 0;")
+            div.project
+              .projectTitle
+                | "MULTIPLAYER PONG"
+              .imageDescription
+                .image
+                  img(src='https://cdn.glitch.global/fd8c17ca-2e39-4fe4-9974-ad0d481a3e1e/pong.bmp?v=1714759193607' onclick="display()").projectImg
+                .description
+                  .descriptionEng.toggle-element.visible
+                    | The WebSocket protocol offers extensive possibilities for transmitting data between devices, which is why I decided to create a classic 'Pong' game in a multiplayer version using mentioned technology. The control is done using the mouse. Playing game on mobile device is possible when the browser is switched to the desktop mode. Adapting the size of the game board to the screen resolution of mobile devices is very limited due to the constraints imposed by the P5.JS library, which is used to render graphics and requires fixing size of the canvas element.
+                  .descriptionPol.toggle-element
+                    | Protokół WebSocket daje duże możliwości przesyłania danych pomiędzy urządzeniami, dlatego postanowiłem napisać klasycznego „Ponga” w wersji multiplayer, wykorzystując wspomnianą technologie. Sterowanie odbywa się za pomocą myszki. Gra na urządzeniu mobilnym jest możliwa po przełączeniu przeglądarki na tryb na komputer. Dostosowanie rozmiarów planszy do rozdzielczości ekranu urządzeń mobilnych jest bardzo ograniczone, gdyż biblioteka P5.JS wykorzystana do renderowania grafiki wymaga ustawienia rozmiarów elementu canvas (planszy, na której odbywa się wyświetlanie grafiki) „na sztywno”.    
+              .tables(style="margin-bottom: 10px")
+                .tech
+                  div.border.not(style="white-space: nowrap;") 
+                      i.icon-cogs
+                      p.borderContent
+                        | JavaScript, HTML5, CSS, WebSocket
+                a(href='https://fan-longhaired-jury.glitch.me/' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").link
+                  .linkEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-globe
+                      p.borderContent
+                        | Link
+                a(href='https://github.com/arturr0/pong' target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;").git
+                  .gitEng
+                    div.border(style="white-space: nowrap;") 
+                      i.icon-github-circled
+                      p.borderContent
+                        | GitHub
+    script(type='text/javascript').
+      let storedViews = localStorage.getItem('views');
+      document.getElementById('visitEng').textContent = "Visits: " + storedViews;
+      document.getElementById('visitPol').textContent = "Wizyty: " + storedViews;
+    script(src='public/dropdown.js')
+    

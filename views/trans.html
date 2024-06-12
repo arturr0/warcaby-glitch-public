@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle Elements with jQuery</title>
+  <style>
+    .toggle-container {
+      position: relative;
+    }
+
+    .toggle-element {
+      opacity: 0;
+      display: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: opacity 0.5s ease, visibility 0.5s ease; /* Adjust the duration and easing function as needed */
+    }
+
+    .visible {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<button onclick="toggleElements()">Toggle Elements</button>
+<div class="toggle-container">
+  <div id="element1" class="toggle-element visible">
+    This is element 1.
+  </div>
+  <div id="element2" class="toggle-element">
+    This is.
+  </div>
+</div>
+
+<script>
+  // Use jQuery to toggle elements
+  function toggleElements() {
+    const element1 = $('#element1');
+    const element2 = $('#element2');
+
+    // Toggle the visibility of both elements
+    element1.toggleClass('visible');
+    element2.toggleClass('visible');
+  }
+</script>
+
+</body>
+</html>
